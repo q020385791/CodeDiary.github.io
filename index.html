@@ -1,32 +1,84 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>CodeDiary</title>
-        <script src="/js/jquery-3.5.1.js"></script>
-	</head>
-	<body>
-		<nav>
-    		<ul>
-        		<li><a href="announcement.html">���i</a></li>
-	        	<li><a href="ToolList.html">�u��C��</a></li>
-        		<li><a href="/cv">CV</a></li>
-        		<li><a href="/blog">Blog</a></li>
-    		</ul>
-		</nav>
-		<div class="container">
-    		
+<head>
+    <title>CodeDiary</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" />
+
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/jquery-ui.js"></script>
+
+    <style>
+        .ui-menu {
+            width: 150px;
+        }
+    </style>
+</head>
+    <body>
+        <table style="width:100%;height:100%;">
+            <tr>
+                <td width="10%;" height="10%;">LOGO</td>
+                <td>上面空白</td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div style="width:90%;margin-top:100px;">
+                        <div style="display:inline-block;">
+                            <ul id="menu">
+                                <li class="ui-state-disabled">
+                                    <div>選單範例</div>
+                                </li>
+                                <li>
+                                    <div><a href="announcement.html">首頁</a></div>
+                                </li>
+                                <li>
+                                    <div>公告</div>
+                                    <ul>
+                                        <li><div><a href="announcement.html">公告</a></div></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>正則表達</div>
+                                    <ul>
+                                        <!--<li><div><a href="Regex.html">驗證數字類</a></div></li>-->
+                                        <li><div><a href="Regex.html">驗證數字類</a></div></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div><a href="SideProject.html">小專案</a></div>
+                                </li>
+
+                            </ul>
+
+                        </div>
 
 
-		</div><!-- /.container -->
-		<footer>
-    	
-		</footer>
-	</body>
+                    </div>
+
+
+                </td>
+                <td>主頁</td>
+            </tr>
+
+        </table>
+    
+        <div class="container">
+
+
+
+        </div><!-- /.container -->
+        <footer></footer>
+    </body>
 </html>
 
-<script type="text/javascript">
+<script charset="UTF8" type="text/javascript">
 
     $(function () {
-     
+        $("#menu").menu();
     });
 </script>
