@@ -28,8 +28,9 @@
                 <p style="height:100px; width:100px;">Logo</p>
             </div>
             <div class="col-lg-10">
-                <p>上面空白</p>
-
+                <div style="display:flex;">
+                    <p style="margin-right:5px;">歡迎</p> <p style="margin-right:5px;" class="IP"> </p> <p>來自</p> <p style="margin-right:5px;" class="continentName"></p><p style="margin-right:5px;" class="countryName"></p><p style="margin-right:5px;" class="city"></p>
+                </div>
             </div>
         </div>
     <!-- 第二行顯示選單與分頁畫面 -->
@@ -89,7 +90,17 @@
 
     $(function () {
         $("#menu").menu();
-
+        $.getJSON('https://api.db-ip.com/v2/free/self', function (data) {
+            console.log(JSON.stringify(data, null, 2));
+            var IP = data.ipAddress;
+            var continentName = data.continentName;
+            var countryName = data.countryName;
+            var city = data.city;
+            $(".IP").text(IP);
+            $(".continentName").text(continentName);
+            $(".countryName").text(countryName);
+            $(".city").text(city);
+        });
 
     });
 
