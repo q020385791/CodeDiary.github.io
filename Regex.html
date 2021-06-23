@@ -15,19 +15,21 @@
             <tr>
                 <th>限定輸入數字</th>
                 <td>
-                    <input id="OnlyNumber" />
+                    <input class="OnlyNumber" />
                 </td>
             </tr>
             <tr>
                 <th>限定數字位數</th>
                 <td>
-                    <input id="LimitNumber" />
+                    <div> <input class="LimitNumber" /> <p style="display:inline;">位數：</p><input class="NumberLevel OnlyNumber" style="width:30px;" /></div>
+                   
                 </td>
             </tr>
             <tr>
                 <th>是否為純中文</th>
                 <td>
-                    <input id="CheckChineseWord" /> <p id="bCheckChinese"></p>
+                    <div>  <input id="CheckChineseWord" /> <p id="bCheckChinese" style="display:inline;"></p></div>
+                  
 
                 </td>
             </tr>
@@ -45,7 +47,7 @@
     $(function () {
 
         //限定數字
-        $("#OnlyNumber").keyup(function (e) {
+        $(".OnlyNumber").keyup(function (e) {
             var rexgex = new RegExp('^[0-9]+$');
             var IFsuccess = rexgex.test($(this).val());
             //alert(IFsuccess);
@@ -55,21 +57,23 @@
             }
         });
 
-        $("#LimitNumber").keyup(function () {
-            if ($("#LimitNumber").val().length>2) {
-                var rexgex = new RegExp('^[0-9]{2}$');
+        $(".LimitNumber").keyup(function () {
+
+            
+            var NumberLevel = $(".NumberLevel").val();
+            //如果沒寫位數預設給4位避免報錯
+            if (NumberLevel=="") {
+                $(".NumberLevel").val("4");
+            }
+
+            var rexgex = new RegExp('^[0-9]{0,' + NumberLevel+'}$');
                 var IFsuccess = rexgex.test($(this).val());
                 //alert(IFsuccess);
                 if (!IFsuccess) {
                     $(this).val("");
 
                 }
-            }
-
-          
         });
-
-
         $("#CheckChineseWord").keyup(function ()
         {
             var reg = /^[\u4E00-\u9FA5]+$/;
