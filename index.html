@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" />
-
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <script src="js/bootstrap.js"></script>
     <script src="js/jquery-3.5.1.js"></script>
     <script src="js/jquery-ui.js"></script>
 
@@ -18,67 +19,71 @@
         }
     </style>
 </head>
-    <body>
-        <table style="width:100%;height:100%;">
-            <tr>
-                <td width="10%;" height="10%;">LOGO</td>
-                <td>上面空白</td>
-            </tr>
-            <tr>
-                <td>
+<body>
+    <div class="container">
+    <!-- 第一行Row為Layout 不動 -->
+        <div class="row">
+            <div class="col-lg-2">
+                <p style="height:100px; width:100px;">Logo</p>
+            </div>
+            <div class="col-lg-10">
+                <p>上面空白</p>
 
-                    <div style="width:90%;margin-top:100px;">
-                        <div style="display:inline-block;">
-                            <ul id="menu">
-                                <li class="ui-state-disabled">
-                                    <div>選單範例</div>
-                                </li>
-                                <li>
-                                    <div><a href="announcement.html">首頁</a></div>
-                                </li>
-                                <li>
-                                    <div>公告</div>
-                                    <ul>
-                                        <li><div><a href="announcement.html">公告</a></div></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <div>正則表達</div>
-                                    <ul>
-                                        <!--<li><div><a href="Regex.html">驗證數字類</a></div></li>-->
-                                        <li><div><a href="Regex.html">驗證數字類</a></div></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <div><a href="SideProject.html">小專案</a></div>
-                                </li>
+            </div>
+        </div>
+    <!-- 第二行顯示選單與分頁畫面 -->
+        <div class="row">
+            <div class="col-lg-2">
+                <div>
+                    <div style="display:inline-block;">
+                        <ul id="menu">
+                            <li class="ui-state-disabled">
+                                <div>選單範例</div>
+                            </li>
+                            <li>
+                                <div><a href="announcement.html">首頁</a></div>
+                            </li>
+                            <li>
+                                <div>公告</div>
+                                <ul>
+                                    <li><div onclick="LoadPartial('announcement.html')">公告</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div>正則表達</div>
+                                <ul>
+                                    <li><div onclick="LoadPartial('Regex.html')">驗證數字類</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div onclick="LoadPartial('SideProject.html')">工具實作</div>
+                            </li>
 
-                            </ul>
-
-                        </div>
-
-
+                        </ul>
                     </div>
+                </div>
+            </div>
+            <div id="Partial" class="col-lg-10">
+                <!-- PartialView頁面顯示處 -->
 
+            </div>
+        </div>
+        <div></div>
 
-                </td>
-                <td>主頁</td>
-            </tr>
-
-        </table>
-    
-        <div class="container">
-
-
-
-        </div><!-- /.container -->
-        <footer></footer>
-    </body>
+    </div><!-- /.container -->
+    <footer></footer>
+</body>
 </html>
 
 <script charset="UTF8" type="text/javascript">
 
     $(function () {
         $("#menu").menu();
+
+
     });
+
+    function LoadPartial(TragetHtml) {
+        $("#Partial").load(TragetHtml);
+    }
 </script>

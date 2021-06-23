@@ -2,12 +2,15 @@
 <html>
 <head>
     <title>CodeDiary</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="js/jquery-3.5.1.js"></script>
 </head>
 <body>
 
     <div class="container">
-        <span>驗證數字類</span>
+        <span>驗證類</span>
         <table>
             <tr>
                 <th>限定輸入數字</th>
@@ -21,6 +24,14 @@
                     <input id="LimitNumber" />
                 </td>
             </tr>
+            <tr>
+                <th>是否為純中文</th>
+                <td>
+                    <input id="CheckChineseWord" /> <p id="bCheckChinese"></p>
+
+                </td>
+            </tr>
+          
         </table>
 
 
@@ -45,15 +56,32 @@
         });
 
         $("#LimitNumber").keyup(function () {
+            if ($("#LimitNumber").val().length>2) {
+                var rexgex = new RegExp('^[0-9]{2}$');
+                var IFsuccess = rexgex.test($(this).val());
+                //alert(IFsuccess);
+                if (!IFsuccess) {
+                    $(this).val("");
 
-            var rexgex = new RegExp('^[0-9]{2}$');
-            var IFsuccess = rexgex.test($(this).val());
-            //alert(IFsuccess);
-            if (!IFsuccess) {
-                $(this).val("");
-
+                }
             }
+
+          
         });
+
+
+        $("#CheckChineseWord").keyup(function ()
+        {
+            var reg = /^[\u4E00-\u9FA5]+$/;
+            if (reg.test($("#CheckChineseWord").val())) {
+                $("#bCheckChinese").text("true");
+            } else {
+                $("#bCheckChinese").text("false");
+            }
+
+        });
+
+    
 
 
     });
