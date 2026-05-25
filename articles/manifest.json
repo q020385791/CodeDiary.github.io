@@ -1,0 +1,30 @@
+﻿{
+    "drawing":  [
+                    "first-post.html",
+                    "test-post.html"
+                ],
+    "dream-bureau":  [
+                         "first-post.html",
+                         "test-post.html"
+                     ],
+    "game-dev":  [
+                     "first-post.html",
+                     "test-post.html"
+                 ],
+    "max":  [
+                "first-post.html",
+                "test-post.html"
+            ],
+    "music":  [
+                  "first-post.html",
+                  "test-post.html"
+              ],
+    "programming":  [
+                        "first-post.html",
+                        "test-post.html"
+                    ],
+    "unity":  [
+                  "first-post.html",
+                  "test-post.html"
+              ]
+}

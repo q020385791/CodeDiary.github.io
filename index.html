@@ -1,128 +1,378 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <!-- https://q020385791.github.io/CodeDiary.github.io/ -->
-    <title>CodeDiary</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/jquery-3.5.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" />
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="js/bootstrap.js"></script>
-
-    <script src="js/jquery-ui.js"></script>
-
-    <style>
-        .ui-menu {
-            width: 150px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- 第一行Row為Layout 不動 -->
-        <div class="row">
-            <div class="col-lg-2">
-                <p style="height:100px; width:100px;">Logo</p>
-            </div>
-            <div class="col-lg-10">
-                <div style="display:flex;">
-                    <p style="margin-right:5px;">歡迎</p> <p style="margin-right:5px;" class="IP"> </p> <p>來自</p> <p style="margin-right:5px;" class="continentName"></p><p style="margin-right:5px;" class="countryName"></p><p style="margin-right:5px;" class="city"></p>
-                </div>
-            </div>
-
-          
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CodeDiary 個人部落格，整理音樂、程式、繪畫、3DMAX、Unity 與遊戲開發中的筆記。"
+    />
+    <title>CodeDiary | 個人部落格</title>
+    <link rel="stylesheet" href="css/site-home.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-mark">WCD</div>
+          <div>
+            <p class="eyebrow">CodeDiary</p>
+            <h1>創作與開發記錄站</h1>
+          </div>
         </div>
-        <!-- 第二行顯示選單與分頁畫面 -->
 
-        <div class="row">
-            <div class="col-lg-2">
-                    <div>
-                        <nav class="navbar navbar-dark bg-dark">
-                            <div class="container-fluid">
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                            </div>
-                        </nav>
-                        <div class="collapse" id="navbarToggleExternalContent">
-                            <div class="bg-dark p-4">
+        <p class="sidebar-text">
+          收錄音樂、程式、繪畫、3DMAX、Unity，以及遊戲《夢境管理局》開發中的紀錄與靈感。
+        </p>
 
-                                <div style="display:inline-block;">
-                                    <ul id="menu">
-                                        <li class="ui-state-disabled">
-                                            <div>選單範例</div>
-                                        </li>
-                                        <li>
-                                            <div><a href="#">首頁</a></div>
-                                        </li>
-                                        <li>
-                                            <div>公告</div>
-                                            <ul>
-                                                <li><div onclick="LoadPartial('announcement.html')">公告</div></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <div>正則表達</div>
-                                            <ul>
-                                                <li><div onclick="LoadPartial('Regex.html')">驗證類</div></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <div>工具實作</div>
-                                            <ul>
-                                                <li>
-                                                    <div>小專案</div>
-                                                    <ul>
-                                                        <li> <div onclick="LoadPartial('SideProject.html')">多層選單測試</div></li>
-                                                        <li> <div onclick="LoadPartial('SideProject.html')">多層選單測試2</div></li>
-                                                        <li> <div onclick="LoadPartial('Cube.html')">有趣的Cube</div></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-            </div>
-            <div id="Partial" class="col-lg-8">
-                <!-- PartialView頁面顯示處 -->
-
-            </div>
+        <div class="select-wrap">
+          <label class="select-label" for="sectionSelect">快速跳轉</label>
+          <select
+            id="sectionSelect"
+            class="section-select"
+            aria-label="快速跳轉到網站區塊"
+          >
+            <option value="#top">首頁總覽</option>
+            <option value="#profile">個人資訊</option>
+            <option value="#latest">最新資訊</option>
+            <option value="#categories">文章列表總覽</option>
+            <option value="music.html">音樂文章列表</option>
+            <option value="programming.html">程式文章列表</option>
+            <option value="drawing.html">繪畫文章列表</option>
+            <option value="3dmax.html">3DMAX 文章列表</option>
+            <option value="unity.html">Unity 文章列表</option>
+            <option value="game.html">遊戲文章列表</option>
+            <option value="dream-bureau.html">夢境管理局文章列表</option>
+            <option value="#legacy">舊頁面整理</option>
+          </select>
         </div>
-        <div></div>
 
-    </div><!-- /.container -->
-    <footer></footer>
-</body>
+        <nav class="tree-nav" aria-label="網站導覽">
+          <a class="tree-link tree-link-home" href="#top">首頁總覽</a>
+
+          <details open>
+            <summary>首頁資訊</summary>
+            <a class="tree-link" href="#profile">個人資訊</a>
+            <a class="tree-link" href="#latest">最新資訊</a>
+            <a class="tree-link" href="#categories">文章列表總覽</a>
+          </details>
+
+          <details open>
+            <summary>文章列表</summary>
+            <a class="tree-link" href="music.html">音樂</a>
+            <a class="tree-link" href="programming.html">程式</a>
+            <a class="tree-link" href="drawing.html">繪畫</a>
+            <a class="tree-link" href="3dmax.html">3DMAX</a>
+            <a class="tree-link" href="unity.html">Unity</a>
+            <a class="tree-link" href="game.html">遊戲</a>
+            <a class="tree-link" href="dream-bureau.html">夢境管理局</a>
+          </details>
+
+          <details>
+            <summary>舊頁面與實驗</summary>
+            <a class="tree-link" href="#legacy">舊內容整理</a>
+            <a class="tree-link" href="announcement.html">公告頁</a>
+            <a class="tree-link" href="Regex.html">Regex 工具</a>
+            <a class="tree-link" href="SideProject.html">小專案測試</a>
+            <a class="tree-link" href="Cube.html">Cube 展示</a>
+          </details>
+        </nav>
+
+        <section class="visitor-card" aria-labelledby="visitorTitle">
+          <p class="eyebrow" id="visitorTitle">訪客資訊</p>
+          <p class="visitor-status" id="visitorStatus">正在取得位置資訊...</p>
+
+          <dl class="visitor-list">
+            <div>
+              <dt>IP</dt>
+              <dd id="visitorIp">--</dd>
+            </div>
+            <div>
+              <dt>地區</dt>
+              <dd id="visitorLocation">--</dd>
+            </div>
+          </dl>
+        </section>
+      </aside>
+
+      <main class="content">
+        <header class="hero" id="top">
+          <div class="hero-copy">
+            <p class="eyebrow">Personal Blog / Dev Journal</p>
+            <h2>首頁是入口，分類是列表，文章才是內文。</h2>
+            <p class="hero-text">
+              現在網站已經整理成部落格結構。從這裡點進各分類，會先看到文章列表；再點單篇文章，才會進入內文頁。
+            </p>
+
+            <div class="hero-actions">
+              <a class="button-primary" href="programming.html"
+                >前往程式文章列表</a
+              >
+              <a class="button-secondary" href="dream-bureau.html"
+                >夢境管理局文章列表</a
+              >
+            </div>
+
+            <div class="hero-shortcuts" aria-label="分類文章列表捷徑">
+              <a class="shortcut-link" href="music.html">音樂</a>
+              <a class="shortcut-link" href="programming.html">程式</a>
+              <a class="shortcut-link" href="drawing.html">繪畫</a>
+              <a class="shortcut-link" href="3dmax.html">3DMAX</a>
+              <a class="shortcut-link" href="unity.html">Unity</a>
+              <a class="shortcut-link" href="game.html">遊戲</a>
+              <a class="shortcut-link" href="dream-bureau.html">夢境管理局</a>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <p class="eyebrow eyebrow-light">現在可用</p>
+            <ul class="focus-list">
+              <li>各分類文章列表頁</li>
+              <li>單篇文章內文頁</li>
+              <li>每個分類的預設模板文章</li>
+            </ul>
+            <p class="panel-note">
+              未來只要把新 HTML 文章檔放進對應分類資料夾，文章列表就會自動新增。
+            </p>
+          </div>
+        </header>
+
+        <section class="content-section" id="profile">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Profile</p>
+              <h2>個人資訊</h2>
+            </div>
+            <p class="section-note">
+              Hi,我是Wan,有問題可以寄信到q020385791@gmail.com。
+            </p>
+          </div>
+
+          <div class="content-grid two-column">
+            <article class="info-card">
+              <p class="card-label">About Me</p>
+              <h3>這裡放你的個人介紹</h3>
+              <p>
+                例如：我是誰、最近在研究什麼、這個網站會更新哪些主題，或想讓訪客先知道的事情。
+              </p>
+              <div class="tag-row">
+                <a class="tag tag-link" href="music.html">音樂</a>
+                <a class="tag tag-link" href="programming.html">程式</a>
+                <a class="tag tag-link" href="drawing.html">繪畫</a>
+                <a class="tag tag-link" href="game.html">遊戲開發</a>
+              </div>
+            </article>
+
+            <article class="info-card">
+              <p class="card-label">Now Working On</p>
+              <h3>目前進行中的主題</h3>
+              <p>
+                你可以列出近期更新重點，例如新曲製作、Unity
+                系統開發、角色設計、3D 場景測試，或夢境管理局的週進度。
+              </p>
+              <ul class="simple-list">
+                <li>置頂主題 01</li>
+                <li>置頂主題 02</li>
+                <li>置頂主題 03</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section" id="latest">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Latest</p>
+              <h2>最新資訊</h2>
+            </div>
+            <p class="section-note">
+              首頁這區可以放最新公告、近期更新，或你最想先讓訪客看到的內容。
+            </p>
+          </div>
+
+          <div class="content-grid">
+            <article class="post-card featured-card">
+              <p class="card-label">Pinned Update</p>
+              <h3>首頁置頂更新標題</h3>
+              <p>
+                這一格可以放本週最重要的更新，例如網站改版、新專案開始、或夢境管理局的重要里程碑。
+              </p>
+              <a class="ghost-link" href="dream-bureau.html"
+                >前往夢境管理局文章列表</a
+              >
+            </article>
+
+            <article class="post-card">
+              <p class="card-label">Recent Note</p>
+              <time datetime="2026-05-25">2026.05.25</time>
+              <h3>最新資訊範例 01</h3>
+              <p>
+                這裡可以手動放最新公告，也可以改成連到某篇文章或某個分類列表。
+              </p>
+              <a class="ghost-link" href="programming.html">前往程式文章列表</a>
+            </article>
+
+            <article class="post-card">
+              <p class="card-label">Recent Note</p>
+              <time datetime="2026-05-20">2026.05.20</time>
+              <h3>最新資訊範例 02</h3>
+              <p>
+                如果之後想放音樂、繪畫或遊戲開發近況，也可以在這裡直接導到分類內頁。
+              </p>
+              <a class="ghost-link" href="music.html">前往音樂文章列表</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section" id="categories">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Categories</p>
+              <h2>分類入口</h2>
+            </div>
+            <p class="section-note">
+              從首頁點進去會先到文章列表，再由文章列表點進單篇內文。
+            </p>
+          </div>
+
+          <div class="content-grid">
+            <a class="resource-card" href="music.html">
+              <p class="card-label">Article List</p>
+              <h3>音樂</h3>
+              <p>收錄編曲、作曲、混音、靈感、歌單整理與作品發布紀錄。</p>
+              <span class="ghost-link">進入音樂文章列表</span>
+            </a>
+
+            <a class="resource-card" href="programming.html">
+              <p class="card-label">Article List</p>
+              <h3>程式</h3>
+              <p>整理程式教學、實作筆記、除錯過程、工具整理與研究心得。</p>
+              <span class="ghost-link">進入程式文章列表</span>
+            </a>
+
+            <a class="resource-card" href="drawing.html">
+              <p class="card-label">Article List</p>
+              <h3>繪畫</h3>
+              <p>放角色設計、草稿、完稿、風格練習與視覺發想紀錄。</p>
+              <span class="ghost-link">進入繪畫文章列表</span>
+            </a>
+
+            <a class="resource-card" href="3dmax.html">
+              <p class="card-label">Article List</p>
+              <h3>3DMAX</h3>
+              <p>整理建模、材質、場景、燈光、輸出設定與練習過程。</p>
+              <span class="ghost-link">進入 3DMAX 文章列表</span>
+            </a>
+
+            <a class="resource-card" href="unity.html">
+              <p class="card-label">Article List</p>
+              <h3>Unity</h3>
+              <p>可整理系統設計、UI、場景組裝、功能實作與開發備忘錄。</p>
+              <span class="ghost-link">進入 Unity 文章列表</span>
+            </a>
+
+            <a class="resource-card" href="game.html">
+              <p class="card-label">Article List</p>
+              <h3>遊戲</h3>
+              <p>放遊戲企劃、機制設計、系統草圖、開發心得與測試紀錄。</p>
+              <span class="ghost-link">進入遊戲文章列表</span>
+            </a>
+
+            <a class="resource-card" href="dream-bureau.html">
+              <p class="card-label">Project Spotlight</p>
+              <h3>夢境管理局</h3>
+              <p>
+                專門收錄《夢境管理局》開發中的資訊、里程碑、週報與待辦事項。
+              </p>
+              <span class="ghost-link">進入夢境管理局文章列表</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="content-section spotlight-section" id="dream-bureau">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Project Spotlight</p>
+              <h2>夢境管理局</h2>
+            </div>
+            <p class="section-note">
+              這個專案現在也已經有獨立文章列表頁，適合持續記錄開發週報與版本進度。
+            </p>
+          </div>
+
+          <div class="content-grid">
+            <article class="post-card featured-card">
+              <p class="card-label">Current Build</p>
+              <h3>開發進度總覽</h3>
+              <p>
+                這一格可以放本週進度、目前完成的功能、接下來的目標，讓訪客一眼知道專案走到哪裡。
+              </p>
+              <a class="ghost-link" href="dream-bureau.html"
+                >查看夢境管理局文章列表</a
+              >
+            </article>
+
+            <article class="post-card">
+              <p class="card-label">How It Works</p>
+              <h3>新增日誌的方式</h3>
+              <p>
+                只要把新的 HTML 檔放進
+                <code>articles/dream-bureau/</code
+                >，列表頁就會自動多出一篇新文章。
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section" id="legacy">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Archive</p>
+              <h2>舊頁面整理</h2>
+            </div>
+            <p class="section-note">
+              保留原本站已有的測試頁與工具頁，方便你之後逐步整理。
+            </p>
+          </div>
+
+          <div class="content-grid">
+            <a class="resource-card" href="announcement.html">
+              <p class="card-label">Legacy Page</p>
+              <h3>公告頁</h3>
+              <p>原本的公告頁，可後續補上正式內容。</p>
+            </a>
+
+            <a class="resource-card" href="Regex.html">
+              <p class="card-label">Legacy Tool</p>
+              <h3>Regex 驗證工具</h3>
+              <p>保留原本的驗證測試頁，方便之後再分類整理。</p>
+            </a>
+
+            <a class="resource-card" href="SideProject.html">
+              <p class="card-label">Legacy Project</p>
+              <h3>小專案測試</h3>
+              <p>目前可當成舊內容入口，後續再決定是否整併。</p>
+            </a>
+
+            <a class="resource-card" href="Cube.html">
+              <p class="card-label">Legacy Demo</p>
+              <h3>Cube 展示</h3>
+              <p>保留原本的展示頁面，方便你之後改成實驗區或作品展示。</p>
+            </a>
+          </div>
+        </section>
+
+        <footer class="site-footer">
+          <p>CodeDiary 個人記錄站</p>
+          <p>
+            首頁是入口，分類頁是文章列表，單篇文章頁才是內文。之後你只要新增分類資料夾中的
+            HTML 文章檔即可。
+          </p>
+          <p>&copy; <span id="currentYear"></span> CodeDiary</p>
+        </footer>
+      </main>
+    </div>
+
+    <script src="js/site-home.js"></script>
+  </body>
 </html>
-
-<script charset="UTF8" type="text/javascript">
-
-    $(function () {
-        $("#menu").menu();
-
-        $.getJSON('https://api.db-ip.com/v2/free/self', function (data) {
-            console.log(JSON.stringify(data, null, 2));
-            var IP = data.ipAddress;
-            var continentName = data.continentName;
-            var countryName = data.countryName;
-            var city = data.city;
-            $(".IP").text(IP);
-            $(".continentName").text(continentName);
-            $(".countryName").text(countryName);
-            $(".city").text(city);
-        });
-
-    });
-
-    function LoadPartial(TragetHtml) {
-        $("#Partial").load(TragetHtml);
-    }
-</script>
