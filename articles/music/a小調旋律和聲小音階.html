@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A小調上下行為何不同? 和聲小音階與旋律小音階</title>
+    <meta name="description" content="上課時學習A小調音階突然的疑問  回來再查詢做紀錄" />
+    <meta name="article:category" content="music" />
+    <meta name="article:published" content="2026-06-18" />
+    <meta name="article:updated" content="2026-06-18" />
+    <style>
+        :root {
+            --bg: #f7f4ef;
+            --surface: #ffffff;
+            --surface-soft: #fffaf3;
+            --text: #2f2a25;
+            --muted: #6f665f;
+            --primary: #9a5d3b;
+            --primary-dark: #6f3f28;
+            --accent: #d9a066;
+            --border: #e7d9ca;
+            --note: #fff3d9;
+            --shadow: 0 12px 30px rgba(83, 57, 37, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+            line-height: 1.8;
+            color: var(--text);
+            background: radial-gradient(circle at top left, #fff7ec 0, transparent 32%), var(--bg);
+        }
+
+        .container {
+            width: min(980px, calc(100% - 32px));
+            margin: 40px auto;
+        }
+
+        .hero {
+            padding: 42px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+        }
+
+            .hero h1 {
+                margin: 0 0 12px;
+                font-size: clamp(2rem, 5vw, 3rem);
+                line-height: 1.3;
+            }
+
+            .hero p {
+                margin: 0;
+                max-width: 760px;
+                font-size: 1.08rem;
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        .summary-card,
+        section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-card {
+            padding: 22px;
+        }
+
+            .summary-card h2 {
+                margin: 0 0 8px;
+                font-size: 1.12rem;
+                color: var(--primary-dark);
+            }
+
+            .summary-card p {
+                margin: 0;
+                color: var(--muted);
+            }
+
+        section {
+            margin-top: 24px;
+            padding: 30px;
+        }
+
+            section h2 {
+                margin-top: 0;
+                padding-bottom: 10px;
+                color: var(--primary-dark);
+                border-bottom: 2px solid var(--border);
+            }
+
+            section h3 {
+                margin-top: 26px;
+                color: var(--primary);
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: #fff;
+            background: var(--primary);
+        }
+
+        tr:nth-child(even) td {
+            background: var(--surface-soft);
+        }
+
+        .notes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 14px 0;
+        }
+
+        .note {
+            padding: 6px 11px;
+            font-family: Consolas, monospace;
+            background: #f4e7db;
+            border: 1px solid #dfc4ae;
+            border-radius: 999px;
+        }
+
+        .music-line {
+            margin: 14px 0;
+            padding: 16px 18px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 1.05rem;
+            background: var(--surface-soft);
+            border-left: 5px solid var(--accent);
+            border-radius: 10px;
+        }
+
+        .callout {
+            margin-top: 18px;
+            padding: 18px 20px;
+            background: var(--note);
+            border: 1px solid #ead19a;
+            border-radius: 14px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+            .comparison article {
+                padding: 22px;
+                background: var(--surface-soft);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+            }
+
+            .comparison h3 {
+                margin-top: 0;
+            }
+
+        .key-point {
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        footer {
+            padding: 28px 0 10px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        @media (max-width: 760px) {
+            .hero,
+            section {
+                padding: 24px;
+            }
+
+            .summary-grid,
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .container {
+                width: 100%;
+                margin: 0;
+            }
+
+            .hero,
+            .summary-card,
+            section {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="container article-template music-article">
+        <header class="hero">
+            <h1>A 小調為何上行與下行不同？</h1>
+            <p>
+                古典樂理中的旋律小音階，會在上行時升高第六級與第七級，
+                下行時則常恢復自然小音階。這個差異和和聲功能、旋律流暢度，以及音樂歷史都有關。
+            </p>
+        </header>
+
+        <div class="summary-grid">
+            <article class="summary-card">
+                <h2>和聲需求</h2>
+                <p>升高第七級，讓屬和弦具有更強烈的回到主和弦的傾向。</p>
+            </article>
+
+            <article class="summary-card">
+                <h2>旋律需求</h2>
+                <p>再升高第六級，可以避免第六級到第七級之間出現突兀的增二度。</p>
+            </article>
+
+            <article class="summary-card">
+                <h2>歷史背景</h2>
+                <p>小調的第六、七級原本就是可變音，後來才被整理成三種常見音階形式。</p>
+            </article>
+        </div>
+
+        <section>
+            <h2>一、三種常見的 A 小音階</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>種類</th>
+                        <th>音階</th>
+                        <th>主要用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>自然小音階</td>
+                        <td>A－B－C－D－E－F－G－A</td>
+                        <td>呈現基本的小調音色。</td>
+                    </tr>
+                    <tr>
+                        <td>和聲小音階</td>
+                        <td>A－B－C－D－E－F－G♯－A</td>
+                        <td>建立導音與強烈的屬和聲功能。</td>
+                    </tr>
+                    <tr>
+                        <td>旋律小音階上行</td>
+                        <td>A－B－C－D－E－F♯－G♯－A</td>
+                        <td>讓上行旋律更平順。</td>
+                    </tr>
+                    <tr>
+                        <td>旋律小音階下行</td>
+                        <td>A－G－F－E－D－C－B－A</td>
+                        <td>常恢復自然小音階的音色。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>二、為何先產生和聲小音階？</h2>
+
+            <p>
+                A 自然小調的第五級和弦是
+                <span class="key-point">Em：E－G－B</span>。
+                由於其中的 G 與主音 A 相距全音，它回到主音的傾向比較弱。
+            </p>
+
+            <p>
+                將第七級 G 升高為 G♯ 後，第五級和弦會變成：
+            </p>
+
+            <div class="music-line">E－G♯－B ＝ E 大三和弦</div>
+
+            <p>
+                G♯ 與 A 只相距半音，因此 G♯ 具有很強的導向性，稱為
+                <span class="key-point">導音</span>。
+            </p>
+
+            <div class="music-line">E 或 E7 → Am</div>
+
+            <div class="callout">
+                <strong>重點：</strong>
+                和聲小音階升高第七級，主要是為了強化
+                <strong>V → i</strong> 的屬和聲到主和聲解決。
+            </div>
+        </section>
+
+        <section>
+            <h2>三、和聲小音階在旋律上有什麼問題？</h2>
+
+            <p>A 和聲小音階的上方音列是：</p>
+
+            <div class="music-line">E－F－G♯－A</div>
+
+            <p>
+                F 到 G♯ 之間是<strong>增二度</strong>，包含三個半音。
+                在傳統歐洲古典聲樂與旋律寫作中，這種跳進常被視為比較突兀。
+            </p>
+
+            <p>因此，作曲家常將 F 也升高為 F♯：</p>
+
+            <div class="music-line">E－F♯－G♯－A</div>
+
+            <div class="notes">
+                <span class="note">E → F♯：大二度</span>
+                <span class="note">F♯ → G♯：大二度</span>
+                <span class="note">G♯ → A：小二度</span>
+            </div>
+
+            <p>
+                三個音程都適合級進，使旋律可以平順地往主音 A 前進。
+                這便形成旋律小音階的上行形式。
+            </p>
+        </section>
+
+        <section>
+            <h2>四、為何下行時恢復自然小音階？</h2>
+
+            <h3>1. 下行時通常不需要導音向上解決</h3>
+
+            <p>
+                G♯ 最典型的作用是向上解決到 A：
+            </p>
+
+            <div class="music-line">G♯ → A</div>
+
+            <p>
+                當旋律從 A 向下離開主音時，便不一定需要保留 G♯ 的導音作用。
+                因此旋律常寫成：
+            </p>
+
+            <div class="music-line">A－G－F－E</div>
+
+            <h3>2. 恢復自然小調的音色</h3>
+
+            <p>
+                F 與 G 都是 A 自然小調的重要音級。若持續使用 F♯、G♯，
+                音階的上半部會接近 A 大調。
+            </p>
+
+            <p>
+                下行時恢復 F、G，可以重新強調自然小調較柔和、陰暗的音色。
+            </p>
+
+            <div class="callout">
+                <strong>傳統教學規則：</strong><br />
+                上行時升高第六、七級；下行時恢復自然第六、七級。
+            </div>
+        </section>
+
+        <section>
+            <h2>五、這和歷史有關嗎？</h2>
+
+            <p>
+                有。自然小音階、和聲小音階與旋律小音階，
+                並非一開始便是三套完全固定的音階。
+            </p>
+
+            <p>
+                從文藝復興後期到巴洛克時期，音樂逐漸從教會調式發展成大小調體系。
+                在實際創作中，小調的第六級與第七級本來就是
+                <span class="key-point">可變音級</span>。
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>音樂情境</th>
+                        <th>常見處理</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>需要強烈屬和聲</td>
+                        <td>升高第七級，形成導音與大屬和弦。</td>
+                    </tr>
+                    <tr>
+                        <td>上行旋律需要流暢</td>
+                        <td>同時升高第六級與第七級。</td>
+                    </tr>
+                    <tr>
+                        <td>下行或不需要導音</td>
+                        <td>使用自然第六級與第七級。</td>
+                    </tr>
+                    <tr>
+                        <td>特殊和聲或旋律需要</td>
+                        <td>依上下文自由選擇升高或還原。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                後來的樂理教材，才將這些既有的作曲慣例整理成
+                「自然小音階、和聲小音階、旋律小音階」三種形式。
+            </p>
+        </section>
+
+        <section>
+            <h2>六、實際作曲並非只看上行或下行</h2>
+
+            <p>
+                「上行升六、七級，下行還原」是一種基礎教學規則。
+                真正的作品還要根據當下的和弦、旋律方向與風格決定。
+            </p>
+
+            <p>例如，下行旋律也可能保留升高音：</p>
+
+            <div class="music-line">A－G♯－F♯－E</div>
+
+            <p>上行旋律也可能使用自然音：</p>
+
+            <div class="music-line">E－F－G－A</div>
+
+            <div class="callout">
+                判斷第六級與第七級時，應同時觀察：
+                <strong>和聲功能、旋律走向、調性色彩與作品風格</strong>。
+            </div>
+        </section>
+
+        <section>
+            <h2>七、和聲小音階與旋律小音階的核心差異</h2>
+
+            <div class="comparison">
+                <article>
+                    <h3>和聲小音階</h3>
+                    <p>
+                        優先處理<strong>和弦功能</strong>。
+                        升高第七級，讓第五級成為大三和弦或屬七和弦。
+                    </p>
+                    <div class="music-line">G → G♯</div>
+                </article>
+
+                <article>
+                    <h3>旋律小音階</h3>
+                    <p>
+                        優先處理<strong>旋律流暢度</strong>。
+                        在升高第七級的基礎上，再升高第六級，避免增二度。
+                    </p>
+                    <div class="music-line">F → F♯</div>
+                </article>
+            </div>
+
+            <div class="callout">
+                <strong>一句話記憶：</strong><br />
+                和聲小音階解決「屬和弦不夠強」；<br />
+                旋律小音階解決「F 到 G♯ 不夠平順」。
+            </div>
+        </section>
+
+        <section>
+            <h2>八、補充：爵士樂中的旋律小音階</h2>
+
+            <p>
+                在爵士樂理中，旋律小音階通常上行與下行都使用相同音列：
+            </p>
+
+            <div class="music-line">A－B－C－D－E－F♯－G♯－A</div>
+
+            <p>
+                因此，爵士旋律小音階與古典教材中的上下行形式，
+                屬於不同的音樂語法與使用習慣。
+            </p>
+        </section>
+
+        <footer>
+            A 小調、和聲小音階與旋律小音階整理
+        </footer>
+    </article>
+</body>
+</html>
+
+
+

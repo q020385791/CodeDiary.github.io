@@ -1,0 +1,22 @@
+# Visual Studio / local workspace state
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.wsuo
+*.vsidx
+
+# Local caches and generated editor state
+*.tmp
+*.temp
+*.log
+Thumbs.db
+Desktop.ini
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node / frontend local install caches
+node_modules/

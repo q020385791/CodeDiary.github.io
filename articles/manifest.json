@@ -1,30 +1,18 @@
-﻿{
-    "drawing":  [
-                    "first-post.html",
-                    "test-post.html"
-                ],
-    "dream-bureau":  [
-                         "first-post.html",
-                         "test-post.html"
-                     ],
-    "game-dev":  [
-                     "first-post.html",
-                     "test-post.html"
-                 ],
-    "max":  [
-                "first-post.html",
-                "test-post.html"
-            ],
-    "music":  [
-                  "first-post.html",
-                  "test-post.html"
-              ],
-    "programming":  [
-                        "first-post.html",
-                        "test-post.html"
-                    ],
-    "unity":  [
-                  "first-post.html",
-                  "test-post.html"
-              ]
+{
+    "music": [
+        "a小調旋律和聲小音階.html"
+    ],
+    "programming": [
+        "2026-05-25運用AI讓網站大更新.html"
+    ],
+    "drawing": [],
+    "max": [],
+    "unity": [],
+    "game-dev": [],
+    "dream-bureau": [
+        "2026-05-25夢境管理局世界觀總覽.html",
+        "2026-05-26夢境世界的構造與法則.html",
+        "2026-05-27夢境管理局的組織與運作.html",
+        "2026-05-28夢境能量與水晶污染機制.html"
+    ]
 }

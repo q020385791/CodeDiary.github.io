@@ -3,6 +3,7 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $articlesRoot = Join-Path $repoRoot "articles"
 $manifestPath = Join-Path $articlesRoot "manifest.json"
+$excludedDirectories = @("draft")
 
 if (-not (Test-Path -LiteralPath $articlesRoot)) {
     throw "articles 資料夾不存在：$articlesRoot"
@@ -10,7 +11,10 @@ if (-not (Test-Path -LiteralPath $articlesRoot)) {
 
 $manifest = [ordered]@{}
 
-Get-ChildItem -LiteralPath $articlesRoot -Directory | Sort-Object Name | ForEach-Object {
+Get-ChildItem -LiteralPath $articlesRoot -Directory |
+    Where-Object { $_.Name -notin $excludedDirectories } |
+    Sort-Object Name |
+    ForEach-Object {
     $categoryName = $_.Name
     $fileNames = Get-ChildItem -LiteralPath $_.FullName -File -Filter *.html |
         Sort-Object Name |

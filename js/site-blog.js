@@ -47,7 +47,7 @@ async function renderCategoryPage(root) {
                     <div class="hero-panel">
                         <p class="eyebrow eyebrow-light">新增文章方式</p>
                         <p>把新的 HTML 檔放進 <code>articles/${escapeHtml(category.slug)}/</code>，這個列表就會自動多出一篇。</p>
-                        <p>每個分類都已經先放一篇模板文章，你可以直接複製後改標題與內文。</p>
+                        <p>如果這個分類目前是空的，可以直接用文章產生器建立草稿，再移進這個分類資料夾。</p>
                         <p>如果是本機預覽，新增文章後也請同步更新 <code>articles/manifest.json</code>。</p>
                     </div>
                 </section>
@@ -75,7 +75,7 @@ async function renderCategoryPage(root) {
     const listNode = root.querySelector("#articleList");
 
     if (countNode) {
-        countNode.textContent = `共 ${articles.length} 篇文章`;
+        countNode.textContent = articles.length ? `共 ${articles.length} 篇文章` : "目前還沒有文章";
     }
 
     if (!listNode) {
@@ -87,7 +87,7 @@ async function renderCategoryPage(root) {
             <article class="empty-card">
                 <p class="card-label">No Posts Yet</p>
                 <h3>目前還沒有文章</h3>
-                <p>你可以先複製這個分類中的模板文章，再改成自己的內容。</p>
+                <p>你可以先用文章產生器建立草稿，或直接新增一篇符合格式的 HTML 文章。</p>
             </article>
         `;
         return;
@@ -146,6 +146,16 @@ async function renderArticlePage(root) {
                             <span class="meta-label">更新</span>
                             <strong>${escapeHtml(site.formatDate(article.updated || article.published))}</strong>
                         </div>
+                        ${
+                            article.pinned
+                                ? `
+                        <div>
+                            <span class="meta-label">排序</span>
+                            <strong>置頂文章</strong>
+                        </div>
+                        `
+                                : ""
+                        }
                     </div>
                 </section>
 
@@ -170,7 +180,7 @@ async function renderArticlePage(root) {
     `;
 
     setupSidebarSelect(root);
-    mountGiscus(root);
+    mountGiscus(root, categorySlug);
 }
 
 async function loadCategoryArticles(categorySlug) {
@@ -209,11 +219,7 @@ async function loadCategoryFiles(categorySlug) {
 
     for (const loadFiles of loaders) {
         try {
-            const files = await loadFiles();
-
-            if (files.length) {
-                return files;
-            }
+            return await loadFiles();
         } catch (error) {
             errors.push(error);
         }
@@ -221,7 +227,7 @@ async function loadCategoryFiles(categorySlug) {
 
     const errorMessage = errors.length
         ? errors.map((error) => error.message).join(" | ")
-        : "No article files found.";
+        : "Unable to load article files.";
     throw new Error(errorMessage);
 }
 
@@ -264,7 +270,14 @@ function parseArticleFile(html, categorySlug, fileName) {
     const category = site.getCategory(categorySlug);
     const parser = new DOMParser();
     const documentNode = parser.parseFromString(html, "text/html");
-    const articleRoot = documentNode.querySelector(".article-template") || documentNode.querySelector("article");
+    const directBodyArticle = Array.from(documentNode.body?.children || []).find((element) =>
+        element.matches("article")
+    );
+    const articleRoot =
+        documentNode.querySelector(".article-template") ||
+        documentNode.querySelector("main") ||
+        directBodyArticle ||
+        documentNode.querySelector("article");
     const fileSlug = site.slugFromFileName(fileName);
     const title =
         documentNode.querySelector("title")?.textContent.trim() ||
@@ -281,6 +294,7 @@ function parseArticleFile(html, categorySlug, fileName) {
     const updated =
         documentNode.querySelector("meta[name='article:updated']")?.getAttribute("content")?.trim() ||
         published;
+    const pinned = parsePinnedFlag(documentNode);
     const eyebrow =
         articleRoot?.querySelector(".post-eyebrow")?.textContent.trim() ||
         category?.shortLabel ||
@@ -303,12 +317,27 @@ function parseArticleFile(html, categorySlug, fileName) {
         summary,
         published,
         updated,
+        pinned,
         eyebrow,
         articleMarkup
     };
 }
 
+function parsePinnedFlag(documentNode) {
+    const pinnedValue = documentNode.querySelector("meta[name='article:pinned']")?.getAttribute("content");
+
+    if (!pinnedValue) {
+        return false;
+    }
+
+    return ["1", "true", "yes", "pinned"].includes(pinnedValue.trim().toLowerCase());
+}
+
 function sortArticles(left, right) {
+    if (Boolean(left.pinned) !== Boolean(right.pinned)) {
+        return left.pinned ? -1 : 1;
+    }
+
     const leftTime = Date.parse(left.published || left.updated || "");
     const rightTime = Date.parse(right.published || right.updated || "");
     const safeLeft = Number.isNaN(leftTime) ? 0 : leftTime;
@@ -393,10 +422,15 @@ function buildSidebar(currentCategorySlug) {
 
 function buildArticleCard(article) {
     const site = window.CodeDiarySite;
+    const cardClassName = article.pinned ? "article-card is-pinned" : "article-card";
+    const pinBadge = article.pinned ? '<span class="pin-badge">置頂</span>' : "";
 
     return `
-        <a class="article-card" href="${article.url}">
-            <p class="card-label">${escapeHtml(article.eyebrow)}</p>
+        <a class="${cardClassName}" href="${article.url}">
+            <div class="card-meta-row">
+                <p class="card-label">${escapeHtml(article.eyebrow)}</p>
+                ${pinBadge}
+            </div>
             <time datetime="${escapeHtml(article.published || "")}">${escapeHtml(site.formatDate(article.published))}</time>
             <h3>${escapeHtml(article.title)}</h3>
             <p>${escapeHtml(article.summary)}</p>
@@ -448,11 +482,48 @@ function renderErrorState(root, message) {
     `;
 }
 
-function mountGiscus(root) {
+function getGiscusCategoryConfig(categorySlug) {
+    const fallbackConfig = {
+        name: "Announcements",
+        id: "DIC_kwDOEnXLcs4C9xte"
+    };
+    const categoryConfigMap = {
+        drawing: {
+            name: "Drawing",
+            id: "DIC_kwDOEnXLcs4C9yQX"
+        },
+        "dream-bureau": {
+            name: "dream-bureau",
+            id: "DIC_kwDOEnXLcs4C9yPr"
+        },
+        "game-dev": {
+            name: "game-dev",
+            id: "DIC_kwDOEnXLcs4C9yPy"
+        },
+        max: {
+            name: "3DMax",
+            id: "DIC_kwDOEnXLcs4C9yPj"
+        },
+        music: {
+            name: "Music",
+            id: "DIC_kwDOEnXLcs4C9yPW"
+        },
+        programming: {
+            name: "Programming",
+            id: "DIC_kwDOEnXLcs4C9yPk"
+        },
+        unity: fallbackConfig
+    };
+
+    return categoryConfigMap[categorySlug] || fallbackConfig;
+}
+
+function mountGiscus(root, categorySlug) {
     const site = window.CodeDiarySite;
     const giscusContainer = root.querySelector("#giscusThread");
+    const giscusCategory = getGiscusCategoryConfig(categorySlug);
 
-    if (!site || !giscusContainer) {
+    if (!site || !giscusContainer || !giscusCategory) {
         return;
     }
 
@@ -469,13 +540,13 @@ function mountGiscus(root) {
     script.src = "https://giscus.app/client.js";
     script.setAttribute("data-repo", "q020385791/CodeDiary.github.io");
     script.setAttribute("data-repo-id", "MDEwOlJlcG9zaXRvcnkzMDk3MDk2ODI=");
-    script.setAttribute("data-category", "Announcements");
-    script.setAttribute("data-category-id", "DIC_kwDOEnXLcs4C9xte");
+    script.setAttribute("data-category", giscusCategory.name);
+    script.setAttribute("data-category-id", giscusCategory.id);
     script.setAttribute("data-mapping", "url");
     script.setAttribute("data-strict", "0");
     script.setAttribute("data-reactions-enabled", "1");
     script.setAttribute("data-emit-metadata", "0");
-    script.setAttribute("data-input-position", "top");
+    script.setAttribute("data-input-position", "bottom");
     script.setAttribute("data-theme", "preferred_color_scheme");
     script.setAttribute("data-lang", "zh-TW");
     script.setAttribute("crossorigin", "anonymous");

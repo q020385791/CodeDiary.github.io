@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeDiary | 文章草稿產生器</title>
+    <meta
+        name="description"
+        content="用表單快速建立 CodeDiary 文章草稿，並直接輸出成符合現有文章系統的 HTML。"
+    />
+    <link rel="stylesheet" href="article-generator.css" />
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Draft Tool</p>
+                <h1>文章 HTML 草稿產生器</h1>
+                <p>
+                    直接用表單建立符合目前文章系統的 HTML 草稿。缺漏的必要欄位會自動補齊，
+                    並可選擇先存草稿，或直接發佈到分類資料夾並更新 manifest。
+                </p>
+            </div>
+            <div class="hero-note">
+                <p class="note-label">使用提醒</p>
+                <ul>
+                    <li>建議用本機 HTTP 預覽開啟，不要直接用 <code>file://</code>。</li>
+                    <li>第一次存檔時，請選擇 repo 內的 <code>articles</code> 根資料夾。</li>
+                    <li>內文可直接輸入 HTML；若沒有 HTML 標籤，工具會自動轉成段落。</li>
+                </ul>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <section class="panel form-panel">
+                <div class="panel-head">
+                    <div>
+                        <p class="panel-label">Editor</p>
+                        <h2>文章資料</h2>
+                    </div>
+                    <div class="action-row compact">
+                        <button type="button" class="ghost-button" id="fillDefaultsButton">補齊必要欄位</button>
+                        <button type="button" class="ghost-button" id="bindArticlesButton">綁定 articles 資料夾</button>
+                    </div>
+                </div>
+
+                <form id="articleForm" class="editor-form">
+                    <div class="field-grid">
+                        <label class="field">
+                            <span>分類</span>
+                            <select id="categoryField" name="category"></select>
+                        </label>
+
+                        <label class="field">
+                            <span>檔名 slug</span>
+                            <input id="slugField" name="slug" type="text" placeholder="例如：new-track-notes" />
+                        </label>
+
+                        <label class="field">
+                            <span>儲存模式</span>
+                            <select id="saveModeField" name="saveMode">
+                                <option value="draft">存成草稿到 articles/draft</option>
+                                <option value="publish">直接發佈到目前分類並更新 manifest</option>
+                            </select>
+                        </label>
+
+                        <label class="field field-wide">
+                            <span>文章標題</span>
+                            <input id="titleField" name="title" type="text" placeholder="輸入文章標題" />
+                        </label>
+
+                        <label class="field field-wide">
+                            <span>文章摘要</span>
+                            <textarea
+                                id="summaryField"
+                                name="summary"
+                                rows="3"
+                                placeholder="會寫入 &lt;meta name=&quot;description&quot;&gt; 與文章開頭摘要。"
+                            ></textarea>
+                        </label>
+
+                        <label class="field">
+                            <span>眉標 eyebrow</span>
+                            <input id="eyebrowField" name="eyebrow" type="text" placeholder="例如：Music" />
+                        </label>
+
+                        <label class="field">
+                            <span>發布日期</span>
+                            <input id="publishedField" name="published" type="date" />
+                        </label>
+
+                        <label class="field">
+                            <span>更新日期</span>
+                            <input id="updatedField" name="updated" type="date" />
+                        </label>
+
+                        <div class="field field-toggle">
+                            <span>排序設定</span>
+                            <label class="toggle-field" for="pinnedField">
+                                <input id="pinnedField" name="pinned" type="checkbox" />
+                                <span>設為置頂文章</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-heading">
+                            <span>內文</span>
+                            <div class="snippet-row">
+                                <button type="button" class="snippet-button" data-snippet="section">插入段落模板</button>
+                                <button type="button" class="snippet-button" data-snippet="quote">插入引用</button>
+                                <button type="button" class="snippet-button" data-snippet="code">插入程式碼</button>
+                                <button type="button" class="snippet-button" data-snippet="image">插入圖片</button>
+                            </div>
+                        </div>
+                        <textarea
+                            id="contentField"
+                            name="content"
+                            rows="18"
+                            placeholder="可直接輸入 HTML。若輸入純文字，會自動轉成段落。"
+                        ></textarea>
+                    </div>
+
+                    <div class="meta-strip">
+                        <div>
+                            <span class="meta-label">預計輸出</span>
+                            <strong id="outputPathLabel">articles/draft/draft-article.html</strong>
+                        </div>
+                        <div>
+                            <span class="meta-label">articles 根目錄</span>
+                            <strong id="articlesBindingLabel">尚未綁定</strong>
+                        </div>
+                    </div>
+
+                    <div class="action-row">
+                        <button type="button" class="primary-button" id="saveArticleButton">存到 articles/draft</button>
+                        <button type="button" class="ghost-button" id="downloadButton">下載 HTML</button>
+                        <button type="button" class="ghost-button" id="copyButton">複製 HTML</button>
+                    </div>
+                </form>
+
+                <div class="status-card" id="statusCard" aria-live="polite">
+                    <p class="status-title">準備中</p>
+                    <p class="status-body">工具會自動檢查必要欄位，存檔前也會再幫你補齊一次。</p>
+                </div>
+            </section>
+
+            <aside class="panel preview-panel">
+                <div class="panel-head">
+                    <div>
+                        <p class="panel-label">Preview</p>
+                        <h2>即時預覽</h2>
+                    </div>
+                </div>
+
+                <div class="preview-meta">
+                    <div>
+                        <span class="meta-label">分類</span>
+                        <strong id="previewCategoryLabel">Music</strong>
+                    </div>
+                    <div>
+                        <span class="meta-label">發布</span>
+                        <strong id="previewPublishedLabel">2026-05-25</strong>
+                    </div>
+                    <div>
+                        <span class="meta-label">更新</span>
+                        <strong id="previewUpdatedLabel">2026-05-25</strong>
+                    </div>
+                    <div>
+                        <span class="meta-label">排序</span>
+                        <strong id="previewPinnedLabel">一般排序</strong>
+                    </div>
+                </div>
+
+                <div class="preview-surface">
+                    <div id="previewArticle" class="preview-article"></div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="../../js/site-data.js"></script>
+    <script src="article-generator.js"></script>
+</body>
+</html>
