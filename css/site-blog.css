@@ -63,12 +63,16 @@ pre {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 24px;
     border: 1px solid var(--line);
     border-radius: var(--radius-large);
     background: var(--panel);
     box-shadow: var(--shadow);
     backdrop-filter: blur(16px);
+    scrollbar-gutter: stable;
 }
 
 .brand-block {
@@ -698,6 +702,10 @@ pre {
 
     .blog-sidebar {
         position: static;
+        max-height: none;
+        overflow: visible;
+        overscroll-behavior: auto;
+        scrollbar-gutter: auto;
     }
 
     .page-hero,
